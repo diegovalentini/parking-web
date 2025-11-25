@@ -72,7 +72,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* CONTENIDO CENTRADO (LOGIN) */
+/* CONTENIDO CENTRADO */
 .main-center {
   flex: 1;
   display: flex;
@@ -173,7 +173,7 @@ body {
   font-size: 14px;
 }
 
-/* BOTÓN TEXTO (Crear cuenta) */
+/* BOTÓN TEXTO */
 .link-button {
   margin-top: 10px;
   background: transparent;
@@ -224,7 +224,7 @@ body {
   border: none;
 }
 
-/* Plazas M1–M5 especiales */
+/* Plazas M1–M5 motos*/
 .spot-special {
   background: radial-gradient(circle at top left, #ccd2ff, #969cd8);
   color: #ffffff;
@@ -457,7 +457,6 @@ body {
   max-width: 360px;
 }
 
-/* Ya teníamos .modal-backdrop y .modal, aquí solo ajustamos tamaños */
 /* ========================= */
 /*    MODO MOVER VEHÍCULO    */
 /* ========================= */
@@ -504,7 +503,6 @@ body {
   background-color: #ffffff;
 }
 
-/* Resaltar la plaza origen al mover */
 .spot-moving-source {
   outline: 3px solid #ffae1a;
   outline-offset: 2px;
@@ -520,7 +518,6 @@ body {
   min-height: 100vh;
 }
 
-/* Barra superior azul para el historial */
 .history-topbar {
   background: #3f7dff;
   color: #ffffff;
@@ -782,7 +779,6 @@ body {
   background: #3569d6;
 }
 
-/* Ocultamos la sección admin por defecto, se muestra por JS si el rol es admin */
 .profile-section-admin {
   display: none;
 }
@@ -796,30 +792,25 @@ body {
 }
 /* ===== ARREGLO MODAL TIPO DE VEHÍCULO EN MÓVIL ===== */
 @media (max-width: 600px) {
-  /* El cuadro del modal ocupa casi todo el ancho, con margen */
   #vehicle-modal .modal {
     max-width: 100%;
     width: calc(100% - 24px);
     margin: 0 12px;
   }
 
-  /* Contenedor de los botones de vehículo:
-     OJO: si en tu HTML se llama distinto (vehicle-buttons, vehicle-options, etc.),
-     puedes añadir varios selectores separados por coma. */
   #vehicle-modal .vehicle-buttons,
   #vehicle-modal .vehicle-options,
   #vehicle-modal .vehicle-btns {
     display: flex;
-    flex-wrap: wrap;          /* permite que bajen de línea */
+    flex-wrap: wrap;         
     justify-content: center;
     gap: 10px;
   }
 
-  /* Cada botón de vehículo en móvil */
   #vehicle-modal .vehicle-btn {
-    flex: 1 1 100%;           /* ocupa todo el ancho disponible */
-    max-width: 260px;         /* por si la pantalla es muy grande */
-    min-width: 0 !important;  /* rompe cualquier min-width que tuviera */
+    flex: 1 1 100%;           
+    max-width: 260px;         
+    min-width: 0 !important;  
     box-sizing: border-box;
   }
 }

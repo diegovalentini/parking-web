@@ -6,16 +6,16 @@ let firebaseAuth = null;
 let firebaseDb = null;
 
 let currentUser = null;
-let currentUserRole = "viewer"; // viewer | operator | admin
+let currentUserRole = "viewer"; 
 
-const HISTORY_KEY = "estacionamiento_history"; // usamos localStorage para historial local
+const HISTORY_KEY = "estacionamiento_history"; 
 
 // ========================
 //   INICIALIZACIÓN
 // ========================
 document.addEventListener("DOMContentLoaded", () => {
   initFirebase();
-  initAuthObserver(); // escucha cambios de sesión
+  initAuthObserver();
 
   initClock();
   initLogin();
@@ -47,7 +47,6 @@ async function fetchUserRole(uid) {
       const data = doc.data();
       return data.role || "viewer";
     }
-    // Si no existe el doc, lo creamos básico
     const user = firebaseAuth.currentUser;
     const displayName = user?.displayName || "";
     await firebaseDb.collection("users").doc(uid).set({
@@ -72,8 +71,6 @@ function initAuthObserver() {
     if (!user) {
       currentUserRole = "viewer";
       sessionStorage.removeItem("userRole");
-
-      // Si estamos en páginas protegidas sin usuario → al login
       if (
         document.body.classList.contains("page-parking") ||
         document.body.classList.contains("page-history")
@@ -82,8 +79,6 @@ function initAuthObserver() {
       }
       return;
     }
-
-    // Intentamos leer el rol de sessionStorage para no ir siempre a Firestore
     let role = sessionStorage.getItem("userRole");
     if (!role) {
       role = await fetchUserRole(user.uid);
@@ -92,7 +87,6 @@ function initAuthObserver() {
 
     currentUserRole = role;
 
-    // Si ya estamos en login y el usuario está logueado, lo enviamos a parking
     if (document.body.classList.contains("page-login")) {
       window.location.href = "parking.html";
     }
@@ -127,7 +121,6 @@ function initLogin() {
   const signupBtn = document.getElementById("signup-btn");
   const forgotLink = document.getElementById("forgot-password-link");
 
-  // ===== LOGIN: solo email + contraseña =====
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!firebaseAuth) {
@@ -202,10 +195,8 @@ function initLogin() {
       try {
         const cred = await firebaseAuth.createUserWithEmailAndPassword(email, password);
 
-        // Guardamos displayName en Auth
         await cred.user.updateProfile({ displayName: name });
 
-        // Creamos documento en Firestore con rol viewer
         await firebaseDb.collection("users").doc(cred.user.uid).set({
           displayName: name,
           email,
@@ -234,7 +225,6 @@ function initLogin() {
     forgotLink.addEventListener("click", () => {
       const resetEmailInput = document.getElementById("reset-email");
       if (resetEmailInput) {
-        // Si ya escribió el email en el login, lo copiamos
         resetEmailInput.value = form.elements["email"]?.value.trim() || "";
       }
       showModal("reset-password-modal");
@@ -277,16 +267,16 @@ function initLogin() {
 // ========================
 //   ESTADO DE PLAZAS
 // ========================
-const spotsState = {}; // ej: spotsState["1"] = { status, plate, vehicle, startTime }
+const spotsState = {};
 let currentSpotLabel = null;
 let currentSpotElement = null;
 
 let pendingFinish = null;
 let moveSourceLabel = null;
 let moveSourceElement = null;
-// Historial (para edición/borrado)
+// Historial 
 let historyCurrentDateKey = null;
-let historyRecordsIndex = {}; // { docId: record }
+let historyRecordsIndex = {}; 
 let historyListEl = null;
 let historySummaryTotalEl = null;
 let historySummaryDateEl = null;
@@ -297,9 +287,9 @@ let currentHistoryRecordId = null;
 // ========================
 function initParking() {
   const grid = document.querySelector(".parking-grid");
-  if (!grid) return; // no estamos en parking.html
+  if (!grid) return; 
 
-  // Plazas especiales M1–M5
+  // Plazas de motoos M1–M5
   const specialSpots = ["M1", "M2", "M3", "M4", "M5"];
   specialSpots.forEach((label) => {
     createSpotCard(grid, label, true);
@@ -322,11 +312,10 @@ function initParking() {
     });
   }
 
-  // Botón historial (calendario)
+  // Botón historial
   const historyBtn = document.getElementById("history-btn");
   if (historyBtn) {
     historyBtn.addEventListener("click", () => {
-      // viewer NO puede ver historial
       if (currentUserRole === "viewer") {
         alert("No tienes permisos para ver el historial.");
         return;
@@ -350,7 +339,7 @@ function initParking() {
 function initProfilePanel() {
   const profileBtn = document.getElementById("profile-btn");
   const modalEl = document.getElementById("profile-modal");
-  if (!profileBtn || !modalEl) return; // no estamos en parking.html
+  if (!profileBtn || !modalEl) return; 
 
   const closeBtn = document.getElementById("profile-close-btn");
   const saveBtn = document.getElementById("profile-save-btn");
@@ -372,7 +361,6 @@ function initProfilePanel() {
   }
 }
 
-// Abrir modal: rellenar datos de la cuenta y, si es admin, cargar usuarios
 function openProfileModal() {
   const emailEl = document.getElementById("profile-email");
   const nameInput = document.getElementById("profile-name-input");
@@ -393,7 +381,7 @@ function openProfileModal() {
   if (adminSection) {
     if (currentUserRole === "admin") {
       adminSection.classList.add("is-visible");
-      loadAdminUsers(); // cargamos lista de usuarios
+      loadAdminUsers();
     } else {
       adminSection.classList.remove("is-visible");
     }
@@ -416,7 +404,6 @@ async function handleProfileSave() {
   const newPassword = passwordInput ? passwordInput.value : "";
 
   try {
-    // Actualizar nombre (Firebase Auth + Firestore)
     if (newName && newName !== (currentUser.displayName || "")) {
       await currentUser.updateProfile({ displayName: newName });
 
@@ -426,12 +413,9 @@ async function handleProfileSave() {
         });
       }
     }
-
-    // Actualizar contraseña (si se ha escrito algo)
     if (newPassword) {
       await currentUser.updatePassword(newPassword);
     }
-
     alert("Datos actualizados correctamente.");
     hideModal("profile-modal");
   } catch (err) {
@@ -446,7 +430,6 @@ async function handleProfileSave() {
   }
 }
 
-// Cargar lista de usuarios para el admin
 async function loadAdminUsers() {
   const container = document.getElementById("admin-users-list");
   if (!container || !firebaseDb) return;
@@ -491,7 +474,6 @@ async function loadAdminUsers() {
       container.appendChild(row);
     });
 
-    // Conectar botones "Guardar" de cada fila
     const saveButtons = container.querySelectorAll(".admin-user-save-btn");
     saveButtons.forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -520,7 +502,7 @@ async function loadAdminUsers() {
     container.innerHTML = "No se pudieron cargar los usuarios.";
   }
 }
-/* Crear una tarjeta de plaza */
+
 function createSpotCard(container, label, isSpecial) {
   const spot = document.createElement("button");
   spot.type = "button";
@@ -537,12 +519,10 @@ function createSpotCard(container, label, isSpecial) {
     const clickedLabel = spot.dataset.label;
     const state = spotsState[clickedLabel];
 
-    // Usuarios tipo viewer: solo miran, no pueden tocar
     if (currentUserRole === "viewer") {
       return;
     }
 
-    // Si estamos en modo mover
     if (moveSourceLabel) {
       handleMoveClick(clickedLabel, spot, state);
       return;
@@ -667,7 +647,6 @@ function initOccupiedModal() {
       const state = spotsState[currentSpotLabel];
       if (!state || state.status !== "ocupado") return;
 
-      // Solo operator o admin pueden mover
       if (currentUserRole === "viewer") return;
 
       moveSourceLabel = currentSpotLabel;
@@ -787,10 +766,8 @@ function initChargeModal() {
       const input = document.getElementById("charge-input");
       const amount = input ? input.value.trim() : "";
 
-      // Guardamos en historial local (luego lo pasaremos a Firestore)
       saveHistoryRecord(pendingFinish, amount);
 
-      // Liberamos la plaza
       delete spotsState[currentSpotLabel];
       applySpotState(currentSpotLabel, currentSpotElement);
 
@@ -957,7 +934,6 @@ function saveHistoryRecord(pending, amount) {
     currentUser?.displayName || currentUser?.email || "";
 
   const record = {
-    // id sólo para la copia local
     id: Date.now(),
     dateKey,
     spotLabel: pending.label,
@@ -971,7 +947,6 @@ function saveHistoryRecord(pending, amount) {
     closedByName,
   };
 
-  // 🚀 Guardar en Firestore si está disponible
   if (firebaseDb) {
     firebaseDb
       .collection("history")
@@ -984,12 +959,11 @@ function saveHistoryRecord(pending, amount) {
       });
   }
 
-  // 💾 Además, guardamos una copia local como respaldo
   const all = loadHistoryRecordsLocal();
   all.push(record);
   localStorage.setItem(HISTORY_KEY, JSON.stringify(all));
 }
-// Lee TODOS los registros desde localStorage (uso interno / respaldo)
+
 function loadHistoryRecordsLocal() {
   try {
     const raw = localStorage.getItem(HISTORY_KEY);
@@ -1001,9 +975,7 @@ function loadHistoryRecordsLocal() {
   }
 }
 
-// Lee registros de un día desde Firestore (o desde localStorage si Firebase no está)
 async function fetchHistoryForDate(dateKey) {
-  // Si tenemos Firestore, lo usamos
   if (firebaseDb && dateKey) {
     try {
       const snapshot = await firebaseDb
@@ -1019,11 +991,9 @@ async function fetchHistoryForDate(dateKey) {
       return records;
     } catch (err) {
       console.error("Error leyendo historial de Firestore:", err);
-      // Si falla Firestore, seguimos con local
     }
   }
 
-  // Fallback: localStorage
   const allLocal = loadHistoryRecordsLocal();
   return allLocal.filter((r) => r.dateKey === dateKey);
 }
@@ -1034,7 +1004,7 @@ async function fetchHistoryForDate(dateKey) {
 // ========================
 async function initHistory() {
   const listEl = document.getElementById("history-list");
-  if (!listEl) return; // no estamos en history.html
+  if (!listEl) return;
 
   historyListEl = listEl;
   historySummaryTotalEl = document.getElementById("history-total");
@@ -1057,7 +1027,7 @@ async function initHistory() {
     historyCurrentDateKey = dateKey;
     const records = await fetchHistoryForDate(dateKey);
     renderHistoryForDate(dateKey, records, historyListEl, historySummaryTotalEl, historySummaryDateEl);
-    initHistoryEditDeleteHandlers(); // conectar botones después de renderizar
+    initHistoryEditDeleteHandlers();
   }
 
   if (dateInput) {
@@ -1069,7 +1039,6 @@ async function initHistory() {
     });
   }
 
-  // Cargar registros del día actual
   loadAndRender(todayKey);
 }
 function renderHistoryForDate(dateKey, records, listEl, summaryTotal, summaryDate) {
@@ -1156,7 +1125,6 @@ function renderHistoryForDate(dateKey, records, listEl, summaryTotal, summaryDat
       </div>
     `;
 
-    // 👉 Si es admin y el registro viene de Firestore (tiene _id), añadimos botones
     if (currentUserRole === "admin" && r._id) {
       const actions = document.createElement("div");
       actions.classList.add("history-item-actions");
@@ -1286,7 +1254,6 @@ function handleHistoryDeleteConfirm() {
 }
 
 function handleHistoryEditSave() {
-  // Comprobaciones básicas
   if (!firebaseDb) {
     alert("No se pudo conectar con la base de datos.");
     return;
@@ -1316,7 +1283,6 @@ function handleHistoryEditSave() {
       hideModal("history-edit-modal");
       currentHistoryRecordId = null;
 
-      // refrescamos la lista del día actual
       if (historyCurrentDateKey && historyListEl) {
         const records = await fetchHistoryForDate(historyCurrentDateKey);
         renderHistoryForDate(
