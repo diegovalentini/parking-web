@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  
+  <title>Parking Plazas</title>
+  <link rel="Icon" href="images/favicon1.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  
+  <script src="firebase-config.js"></script>
+  <script src="script.js" defer></script>
+
+</head>
+<body class="page-parking">
+  <!-- Barra superior igual que en el login -->
+  <header class="topbar">
+    <div class="topbar-time">00:00</div>
+    <div class="topbar-title">Parking Test</div>
+    <div class="topbar-icons">
+      <button class="icon-button" aria-label="Historial" id="history-btn">📅</button>
+      <button class="icon-button" aria-label="Perfil de usuario" id="profile-btn">👤</button>
+      <button class="icon-button" aria-label="Cerrar sesión" id="logout-btn">⇦</button>
+    </div>
+  </header>
+
+  <main class="parking-main">
+    <!-- Título arriba (opcional) -->
+    <!-- <h1 class="parking-title">Estacionamiento Azul</h1> -->
+
+    <!-- Grid de plazas -->
+    <section class="parking-grid">
+      <!-- Las plazas se generarán con JavaScript para no escribir 50 a mano -->
+    </section>
+        <!-- BARRA DE MODO MOVER -->
+    <div id="move-banner" class="move-banner">
+      <span>Selecciona una plaza libre para mover el vehículo.</span>
+      <button id="move-cancel" type="button" class="move-cancel-btn">
+        Cancelar
+      </button>
+    </div>
+  <!-- MODAL 1: Datos de la plaza -->
+    <div class="modal-backdrop" id="spot-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-icon">P</div>
+          <div>
+            <div class="modal-title">Lugar <span id="spot-modal-title">1</span></div>
+          </div>
+        </div>
+
+        <label class="input-label modal-input-label">
+          Número de patente
+          <input
+            type="text"
+            id="plate-input"
+            placeholder="Ej: AB 123 CD"
+          />
+        </label>
+
+        <div class="modal-actions">
+          <button class="link-button" type="button" id="spot-close">Cerrar</button>
+
+          <div class="modal-actions-right">
+            <button class="btn danger" type="button" id="spot-block">
+              <span class="btn-icon">🔒</span>
+              <span>Bloquear</span>
+            </button>
+
+            <button class="btn secondary" type="button" id="spot-start">
+              <span class="btn-icon">▶</span>
+              <span>Iniciar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 2: Tipo de vehículo -->
+    <div class="modal-backdrop" id="vehicle-modal">
+      <div class="modal">
+        <h2 class="modal-title">Seleccionar tipo de vehículo</h2>
+        <p class="modal-subtitle">
+          Por favor selecciona el tipo de vehículo para esta plaza.
+        </p>
+
+        <div class="vehicle-options">
+          <button class="vehicle-btn" data-vehicle="auto">
+            <span class="vehicle-emoji">🚘</span>
+            <span>Auto</span>
+          </button>
+
+          <button class="vehicle-btn" data-vehicle="camioneta">
+            <span class="vehicle-emoji">🛻</span>
+            <span>Camioneta</span>
+          </button>
+
+          <button class="vehicle-btn" data-vehicle="moto">
+            <span class="vehicle-emoji">🏍️</span>
+            <span>Moto</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  <!-- MODAL 3: Plaza ocupada (Mover / Finalizar) -->
+    <div class="modal-backdrop" id="occupied-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-icon" id="occupied-vehicle-icon">🚗</div>
+          <div class="modal-title">Lugar <span id="occupied-spot-label">1</span></div>
+        </div>
+
+        <p class="modal-text"><strong>Ocupado por:</strong></p>
+        <p class="modal-text" id="occupied-plate">—</p>
+        <p class="modal-text small" id="occupied-since">Desde: —</p>
+
+        <div class="modal-actions">
+          <button class="link-button" type="button" id="occupied-close">Cerrar</button>
+
+          <div class="modal-actions-right">
+            <button class="btn warning" type="button" id="occupied-move">
+              <span class="btn-icon">⇄</span>
+              <span>Mover</span>
+            </button>
+            <button class="btn secondary" type="button" id="occupied-finish">
+              <span class="btn-icon">⭕</span>
+              <span>Finalizar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 4: Finalizar estacionamiento (resumen) -->
+    <div class="modal-backdrop" id="finish-modal">
+      <div class="modal">
+        <h2 class="modal-title">Finalizar estacionamiento</h2>
+
+        <div class="finish-details">
+          <p><strong>Lugar:</strong> <span id="finish-spot-label"></span></p>
+          <p><strong>Patente:</strong> <span id="finish-plate"></span></p>
+          <p><strong>Tipo:</strong> <span id="finish-vehicle"></span></p>
+          <p><strong>Inicio:</strong> <span id="finish-start"></span></p>
+          <p><strong>Fin:</strong> <span id="finish-end"></span></p>
+          <p><strong>Duración:</strong> <span id="finish-duration"></span></p>
+        </div>
+
+        <p class="modal-text small">
+          ¿Deseas finalizar y liberar esta plaza?
+        </p>
+
+        <div class="modal-actions">
+          <button class="link-button" type="button" id="finish-cancel">Cancelar</button>
+          <button class="btn secondary" type="button" id="finish-confirm">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 5: ¿Cuánto cobraste? -->
+    <div class="modal-backdrop" id="charge-modal">
+      <div class="modal modal-small">
+        <h2 class="modal-title">¿Cuánto cobraste?</h2>
+
+        <label class="input-label modal-input-label">
+          Monto cobrado
+          <input
+            type="number"
+            id="charge-input"
+            placeholder="Monto cobrado"
+          />
+        </label>
+
+        <div class="modal-actions">
+          <button class="link-button" type="button" id="charge-cancel">Cancelar</button>
+          <button class="btn secondary" type="button" id="charge-save">Guardar</button>
+        </div>
+      </div>
+    </div>
+      <!-- MODAL PERFIL DE USUARIO -->
+  <div class="modal-backdrop" id="profile-modal">
+    <div class="modal modal-large">
+      <h2 class="modal-title">Perfil de usuario</h2>
+      <p class="modal-subtitle">
+        Actualiza tu información de cuenta.
+      </p>
+
+      <div class="profile-sections">
+        <!-- Sección MI CUENTA (para todos) -->
+        <section class="profile-section">
+          <h3 class="profile-section-title">Mi cuenta</h3>
+
+          <div class="profile-field-group">
+            <label class="input-label">Email (solo lectura)</label>
+            <div class="profile-readonly" id="profile-email"></div>
+          </div>
+
+          <label class="input-label">
+            Nombre de usuario
+            <input type="text" id="profile-name-input" />
+          </label>
+
+          <label class="input-label">
+            Cambiar contraseña
+            <input
+              type="password"
+              id="profile-password-input"
+              placeholder="Deja vacío si no quieres cambiarla"
+            />
+          </label>
+
+          <div class="profile-help">
+            Por seguridad, si pasa mucho tiempo sin iniciar sesión, puede que se te pida volver a loguearte antes de cambiar la contraseña.
+          </div>
+        </section>
+
+        <!-- Sección ADMIN (solo visible para admin) -->
+        <section class="profile-section profile-section-admin" id="admin-users-section">
+          <h3 class="profile-section-title">Usuarios (solo administrador)</h3>
+          <p class="profile-help">
+            Aquí puedes ver y editar los usuarios del sistema.
+          </p>
+
+          <div id="admin-users-list" class="admin-users-list">
+            <!-- Se llena con JavaScript -->
+          </div>
+        </section>
+      </div>
+
+      <div class="modal-actions">
+        <button class="link-button" type="button" id="profile-close-btn">
+          Cerrar
+        </button>
+        <button class="btn secondary" type="button" id="profile-save-btn">
+          Guardar cambios
+        </button>
+      </div>
+    </div>
+  </div>
+  </main>
+</body>
+</html>

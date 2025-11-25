@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "parking-azul",
+    "prod": "parking-azul"
+  },
+  "targets": {},
+  "etags": {}
+}

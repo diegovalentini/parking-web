@@ -1,0 +1,825 @@
+/* RESET BÁSICO */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f3f1ff;
+  color: #1d2555;
+}
+
+/* PÁGINAS */
+.page-login,
+.page-parking {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* BARRA SUPERIOR */
+.topbar {
+  height: 56px;
+  background: #eceffa;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px rgba(15, 16, 54, 0.08);
+  background: linear-gradient(#6d727a, transparent 15%);
+}
+
+.topbar-time {
+  font-weight: 800;
+  font-size: 18px;
+  color: #1c3565;
+}
+
+.topbar-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  color: #112d61;
+  font-family: sans-serif;
+  
+}
+
+.topbar-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 0.8;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.icon-button:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* CONTENIDO CENTRADO (LOGIN) */
+.main-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: linear-gradient(#122a5a, transparent 100%);
+}
+
+/* TARJETA */
+.card {
+  background: #f1edff;
+  border-radius: 24px;
+  padding: 32px 40px 28px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 5px 30px rgb(227, 241, 239);
+}
+
+.login-card {
+  text-align: left;
+}
+
+.card-title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1f3166;
+}
+
+/* FORMULARIO LOGIN */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555c86;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-label input {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d2d6ff;
+  background: #ffffff;
+  outline: none;
+  font-size: 14px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.input-label input:focus {
+  border-color: #6b8bf5;
+  box-shadow: 0 0 0 2px rgba(106, 141, 255, 0.25);
+}
+
+/* BOTONES */
+.btn {
+  margin-top: 16px;
+  width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  padding: 0px 20px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+}
+
+.btn.primary {
+  background: #4f6bff;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(50, 80, 210, 0.35);
+}
+
+.btn.primary:hover {
+  background: #4259ce;
+  transform: translateY(-1px);
+}
+
+.btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(50, 80, 210, 0.35);
+}
+
+.btn-icon {
+  font-size: 14px;
+}
+
+/* BOTÓN TEXTO (Crear cuenta) */
+.link-button {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: #4f6bff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+/* PÁGINA PARKING */
+.parking-main {
+  flex: 1;
+  padding: 24px 28px 32px;
+  background: linear-gradient(transparent, #464853);
+}
+
+/* GRID DE PLAZAS */
+.parking-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+/* TARJETA PLAZA */
+.spot {
+  border-radius: 26px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 26px rgba(11, 21, 61, 0.18);
+  text-align: center;
+  user-select: none;
+}
+
+/* Plazas normales */
+.spot-regular {
+  background: radial-gradient(circle at top left, #9ce0b3, #4c9840);
+  color: #ffffff;
+  border: none;
+}
+
+/* Plazas M1–M5 especiales */
+.spot-special {
+  background: radial-gradient(circle at top left, #ccd2ff, #969cd8);
+  color: #ffffff;
+  border: none;
+}
+
+/* Tipografía dentro de la plaza */
+.spot-letter {
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.spot-label {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  font-family:sans-serif;
+}
+
+.spot-status {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Un poquito de responsividad */
+@media (max-width: 480px) {
+  .card {
+    padding: 24px 22px 20px;
+  }
+
+  .topbar-title {
+    font-size: 18px;
+  }
+
+  .spot {
+    height: 110px;
+  }
+}
+/* ========================= */
+/*        MODALES            */
+/* ========================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 40, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease-out;
+}
+
+.modal-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  background: #f1efff;
+  border-radius: 24px;
+  padding: 20px 24px 18px;
+  max-width: 460px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(4, 6, 32, 0.65);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.modal-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #1b2a5c;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1b2a5c;
+}
+
+.modal-subtitle {
+  font-size: 14px;
+  color: #5a628a;
+  margin-top: 6px;
+}
+
+.modal-input-label {
+  margin-top: 10px;
+}
+
+.modal-actions {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-actions-right {
+  display: flex;
+  gap: 10px;
+}
+
+/* Botones extra para el modal */
+.btn.secondary {
+  background: #ffffff;
+  color: #3954da;
+  box-shadow: 0 4px 10px rgba(25, 36, 100, 0.18);
+  margin-left: 16px;
+  margin-bottom: 10px;
+}
+
+.btn.secondary:hover {
+  background: #f4f5ff;
+}
+
+.btn.danger {
+  background: #f54a4a;
+  color: #f5f2f2;
+  box-shadow: 0 7px 18px rgba(200, 45, 45, 0.45);
+  margin-left: 15px;
+}
+
+.btn.danger:hover {
+  background: #e54242;
+}
+
+/* Opciones de vehículo */
+.vehicle-options {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+}
+
+.vehicle-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 10px 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(22, 32, 94, 0.18);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d4ab0;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+}
+
+.vehicle-btn:hover {
+  transform: translateY(-1px);
+  background: #f4f5ff;
+}
+
+.vehicle-emoji {
+  font-size: 20px;
+}
+
+/* Estados de plaza */
+.spot-occupied {
+  background: radial-gradient(circle at top left, #f8a3a3, #d75252);
+  color: #380b0b;
+}
+
+.spot-blocked {
+  background: radial-gradient(circle at top left, #d1d5e5, #a1a5b8);
+  color: #252837;
+}
+
+.spot-icon {
+  font-size: 30px;
+  margin-bottom: 6px;
+}
+/* ========================= */
+/*        MODALES EXTRA      */
+/* ========================= */
+
+.modal-text {
+  font-size: 14px;
+  color: #3a4068;
+  margin-top: 4px;
+}
+
+.modal-text.small {
+  font-size: 13px;
+  color: #5a628a;
+  margin-top: 6px;
+}
+
+.finish-details {
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.finish-details p {
+  font-size: 13px;
+  color: #2d335c;
+  margin-bottom: 4px;
+}
+
+.btn.warning {
+  background: #ffae1a;
+  color: #4a3100;
+  box-shadow: 0 7px 18px rgba(202, 142, 24, 0.5);
+}
+
+.btn.warning:hover {
+  background: #f39c12;
+}
+
+.modal-small {
+  max-width: 360px;
+}
+
+/* Ya teníamos .modal-backdrop y .modal, aquí solo ajustamos tamaños */
+/* ========================= */
+/*    MODO MOVER VEHÍCULO    */
+/* ========================= */
+
+.move-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translate(-50%, 12px);
+  background: #fff3cd;
+  border-radius: 999px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  color: #7a5a00;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  z-index: 50;
+}
+
+.move-banner.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.move-cancel-btn {
+  background: transparent;
+  border-radius: 999px;
+  border: none;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #7a5a00;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.move-cancel-btn:hover {
+  background-color: #ffffff;
+}
+
+/* Resaltar la plaza origen al mover */
+.spot-moving-source {
+  outline: 3px solid #ffae1a;
+  outline-offset: 2px;
+}
+/* ========================= */
+/*      PÁGINA HISTORIAL     */
+/* ========================= */
+
+.page-history {
+  background: #eef1ff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Barra superior azul para el historial */
+.history-topbar {
+  background: #3f7dff;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.history-topbar .topbar-title {
+  color: #ffffff;
+}
+
+.history-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-button {
+  margin-right: 8px;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.history-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-date-input {
+  border-radius: 999px;
+  border: none;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+/* Main del historial */
+.history-main {
+  flex: 1;
+  padding: 16px 24px 24px;
+}
+
+/* Tarjeta de resumen */
+.history-summary-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e0f0ff;
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  border: 1px solid #8ab8ff;
+}
+
+.history-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary-icon {
+  font-size: 18px;
+}
+
+.summary-text {
+  font-size: 14px;
+  color: #234a86;
+}
+
+.history-summary-right {
+  font-size: 13px;
+  color: #234a86;
+}
+
+/* Lista de registros */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Tarjeta de un registro */
+.history-item {
+  background: #f4f1ff;
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.history-item-header {
+  font-weight: 800;
+  font-size: 16px;
+  color: #1f2750;
+  margin-bottom: 6px;
+}
+
+.history-item-plate {
+  font-weight: 700;
+}
+
+/* Línea de info con icono */
+.history-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #333a66;
+  margin-bottom: 2px;
+}
+
+.history-row .icon {
+  width: 18px;
+  text-align: center;
+}
+
+/* Texto más pequeño */
+.history-row.small {
+  font-size: 13px;
+}
+
+/* Margen inferior extra entre tarjetas largas */
+@media (min-width: 900px) {
+  .history-item {
+    padding: 14px 20px;
+  }
+}
+/* ========================= */
+/*   ACCIONES EN HISTORIAL   */
+/* ========================= */
+
+.history-item {
+  position: relative;
+}
+
+.history-item-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.icon-button.small {
+  font-size: 16px;
+  padding: 2px;
+}
+
+/* ========================= */
+/*      PANEL DE USUARIO     */
+/* ========================= */
+
+.modal-large {
+  max-width: 720px;
+}
+
+.profile-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.profile-section {
+  background: #f3f4ff;
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.profile-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222a5b;
+  margin-bottom: 8px;
+}
+
+.profile-help {
+  font-size: 12px;
+  color: #5a628a;
+  margin-top: 4px;
+}
+
+.profile-readonly {
+  background: #e6e8ff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #303864;
+}
+
+.profile-field-group {
+  margin-bottom: 8px;
+}
+
+/* Lista de usuarios admin */
+.admin-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.admin-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.admin-user-main {
+  flex: 1;
+}
+
+.admin-user-name-input {
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #c9cfee;
+  font-size: 13px;
+}
+
+.admin-user-email {
+  font-size: 12px;
+  color: #6a7196;
+  margin-top: 2px;
+}
+
+.admin-user-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-role-select {
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  border: 1px solid #c9cfee;
+  background: #f8f8ff;
+}
+
+.admin-user-save-btn {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #3f7dff;
+  color: white;
+  box-shadow: 0 2px 6px rgba(63, 125, 255, 0.4);
+}
+
+.admin-user-save-btn:hover {
+  background: #3569d6;
+}
+
+/* Ocultamos la sección admin por defecto, se muestra por JS si el rol es admin */
+.profile-section-admin {
+  display: none;
+}
+.profile-section-admin.is-visible {
+  display: block;
+}
+.login-links-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+/* ===== ARREGLO MODAL TIPO DE VEHÍCULO EN MÓVIL ===== */
+@media (max-width: 600px) {
+  /* El cuadro del modal ocupa casi todo el ancho, con margen */
+  #vehicle-modal .modal {
+    max-width: 100%;
+    width: calc(100% - 24px);
+    margin: 0 12px;
+  }
+
+  /* Contenedor de los botones de vehículo:
+     OJO: si en tu HTML se llama distinto (vehicle-buttons, vehicle-options, etc.),
+     puedes añadir varios selectores separados por coma. */
+  #vehicle-modal .vehicle-buttons,
+  #vehicle-modal .vehicle-options,
+  #vehicle-modal .vehicle-btns {
+    display: flex;
+    flex-wrap: wrap;          /* permite que bajen de línea */
+    justify-content: center;
+    gap: 10px;
+  }
+
+  /* Cada botón de vehículo en móvil */
+  #vehicle-modal .vehicle-btn {
+    flex: 1 1 100%;           /* ocupa todo el ancho disponible */
+    max-width: 260px;         /* por si la pantalla es muy grande */
+    min-width: 0 !important;  /* rompe cualquier min-width que tuviera */
+    box-sizing: border-box;
+  }
+}

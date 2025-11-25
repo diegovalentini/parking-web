@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Historial por Día</title>
+  <link rel="Icon" href="images/favicon1.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  
+  <script src="firebase-config.js"></script>
+  <script src="script.js" defer></script>
+  
+</head>
+<body class="page-history">
+  <!-- Barra superior azul -->
+  <header class="topbar history-topbar">
+    <button class="icon-button back-button" aria-label="Volver" id="history-back">
+      ←
+    </button>
+
+    <div class="topbar-title history-title">
+      📅 Historial por Día
+    </div>
+
+    <div class="topbar-icons history-icons">
+      <!-- Selector de fecha -->
+      <input type="date" id="history-date" class="history-date-input" />
+      <!-- Icono de PDF (por ahora solo decorativo) -->
+      <button class="icon-button" aria-label="Exportar PDF" id="history-pdf-btn">📄</button>
+    </div>
+  </header>
+
+  <main class="history-main">
+    <!-- Tarjeta de resumen -->
+    <section class="history-summary-card">
+      <div class="history-summary-left">
+        <span class="summary-icon">📊</span>
+        <span class="summary-text">
+          Total de registros: <strong id="history-total">0</strong>
+        </span>
+      </div>
+      <div class="history-summary-right">
+        <span id="history-summary-date">--/--/----</span>
+      </div>
+    </section>
+
+    <!-- Lista de registros -->
+    <section class="history-list" id="history-list">
+      <!-- Se llena con JS -->
+    </section>
+    <!-- MODAL EDITAR REGISTRO -->
+  <div class="modal-backdrop" id="history-edit-modal">
+    <div class="modal modal-small">
+      <h2 class="modal-title">Editar registro</h2>
+
+      <label class="input-label modal-input-label">
+        Patente
+        <input type="text" id="history-edit-plate" />
+      </label>
+
+      <label class="input-label modal-input-label">
+        Tipo de vehículo
+        <select id="history-edit-vehicle">
+          <option value="auto">Auto</option>
+          <option value="camioneta">Camioneta</option>
+          <option value="moto">Moto</option>
+        </select>
+      </label>
+
+      <label class="input-label modal-input-label">
+        Monto cobrado
+        <input type="number" id="history-edit-amount" />
+      </label>
+
+      <div class="modal-actions">
+        <button class="link-button" type="button" id="history-edit-cancel">
+          Cancelar
+        </button>
+        <button class="btn secondary" type="button" id="history-edit-save">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BORRAR REGISTRO -->
+  <div class="modal-backdrop" id="history-delete-modal">
+    <div class="modal modal-small">
+      <h2 class="modal-title">Eliminar registro</h2>
+      <p class="modal-text">
+        ¿Seguro que deseas eliminar este registro del historial?
+      </p>
+
+      <div class="modal-actions">
+        <button class="link-button" type="button" id="history-delete-cancel">
+          Cancelar
+        </button>
+        <button class="btn danger" type="button" id="history-delete-confirm">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+  </main>
+</body>
+</html>

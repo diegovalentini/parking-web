@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parking Login</title>
+  <link rel="Icon" href="images/favicon1.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Diego Valentini"
+
+  <!-- Fuente parecida a la de tu app -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  
+  <!-- Tu config de Firebase -->
+  <script src="firebase-config.js"></script>
+  
+  <!-- Tu lógica de la app -->
+  <script src="script.js" defer></script>
+
+</head>
+<body class="page-login">
+  <!-- Barra superior -->
+  <header class="topbar">
+    <div class="topbar-time">00:00</div>
+    <div class="topbar-title">Parking Test</div>
+    <div class="topbar-icons">
+      <button class="icon-button" aria-label="Refrescar">⟳</button>
+      <button class="icon-button" aria-label="Configuración">⚙</button>
+      <button class="icon-button" aria-label="Pantalla completa">⤢</button>
+    </div>
+  </header>
+
+  <!-- Contenido centrado -->
+  <main class="main-center">
+    <section class="card login-card">
+      <h1 class="card-title">Parking Test</h1>
+
+      <form id="login-form" class="login-form">
+      <label class="input-label">
+        Usuario (email)
+        <input type="email" name="email" required />
+      </label>
+    
+      <label class="input-label">
+        Contraseña
+        <input type="password" name="password" required />
+      </label>
+    
+      <button class="btn primary login-btn" type="submit">
+        ➤ Ingresar
+      </button>
+    
+      <div class="login-links-row">
+        <button type="button" class="link-button" id="forgot-password-link">
+          ¿Olvidaste tu contraseña?
+        </button>
+      </div>
+    </form>
+      <button class="link-button" type="button" id="signup-btn">>
+        Crear cuenta
+      </button>
+    </section>
+  </main>
+  <!-- MODAL CREAR CUENTA -->
+<div class="modal-backdrop" id="signup-modal">
+  <div class="modal modal-small">
+    <h2 class="modal-title">Crear cuenta</h2>
+
+    <form id="signup-form">
+      <label class="input-label">
+        Nombre de usuario
+        <input type="text" id="signup-name" required />
+      </label>
+
+      <label class="input-label">
+        Email
+        <input type="email" id="signup-email" required />
+      </label>
+
+      <label class="input-label">
+        Contraseña
+        <input type="password" id="signup-password" required />
+      </label>
+
+      <div class="modal-actions">
+        <button class="link-button" type="button" id="signup-cancel">
+          Cancelar
+        </button>
+        <button class="btn secondary" type="submit">
+          Crear cuenta
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- MODAL RECUPERAR CONTRASEÑA -->
+<div class="modal-backdrop" id="reset-password-modal">
+  <div class="modal modal-small">
+    <h2 class="modal-title">Recuperar contraseña</h2>
+    <p class="modal-text">
+      Ingresa tu email y te enviaremos un enlace para restablecer tu contraseña.
+    </p>
+
+    <label class="input-label">
+      Email
+      <input type="email" id="reset-email" required />
+    </label>
+
+    <div class="modal-actions">
+      <button class="link-button" type="button" id="reset-cancel">
+        Cancelar
+      </button>
+      <button class="btn secondary" type="button" id="reset-send">
+        Enviar enlace
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
